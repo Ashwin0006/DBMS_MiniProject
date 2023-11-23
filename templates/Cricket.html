@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <h1>Cricket Management System</h1>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/Sports.css')}}">
+{% endblock %}
+
+{% block body %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Colour</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <span>
+        <form method="post" action="{{ url_for('cric_data') }}">
+            <p>
+                <h1>Select The Option To Perform</h1>
+            </p>
+            <input type="radio" id="insertOption" name="cricoption" value="insert" required>
+            <label for="insertOption">Insert Data Into the Table</label>
+            <br>
+            <input type="radio" id="deleteOption" name="cricoption" value="delete">
+            <label for="deleteOption">Delete Data From the Table</label>
+            <br>
+            <input type="radio" id="getOption" name="cricoption" value="get">
+            <label for="getOption">Get Particular Data About Team</label>
+            <br><br>
+            <button type="submit" class="fancy-button">Submit</button>
+        </form>
+    </span>
+    
+
+    <br><br>
+
+{% endblock %}

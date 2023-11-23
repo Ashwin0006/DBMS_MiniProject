@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    <title>Sports Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/webpage1.css')}}">
+{% endblock %}
+
+{% block body %} 
+    <a id="HeadingTop"><h1>Welcome to Sports Management System!</h1></a>
+    <form method="post" action="{{ url_for('next_page') }}">
+        <label for="myDropdown">Games Available :</label>
+        <select id="myDropdown" name="selectedGame">
+            <option value="Cricket">Cricket</option>
+            <option value="Football">FootBall</option>
+            <option value="Chess">Chess</option>
+            <option value="BasketBall">BasketBall</option>
+        </select>
+
+        <br><br><br>
+
+        <button type="submit" class="fancy-button">Submit</button>
+    </form>
+{% endblock %}
