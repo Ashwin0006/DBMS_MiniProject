@@ -37,11 +37,32 @@ def next_page():
                 return render_template("FootBall.html", results = result)
     except Exception as e:
         return f"Error :{e}!\nPlease Contact Developers"
-    return "INVALID REQUEST"
+    return "INVALID REQUEST!"
 
-@app.route("/cric_data", methods=["post", "get"])
+@app.route("/cric_data", methods=["POST", "GET"])
 def cric_data():
-    return "CRIC_DATA SUCCESSFUL...."
+    global table_name
+    try:
+        if request.method == "POST":
+            option = request.form['cricdata']
+            if(option == "insert"):
+                name = request.form['field1']
+                color = request.form['field2']
+                query = f"INSERT INTO {table_name} Values ({name}, {color})"
+                cursor.execute(query)
+                cursor.executr("SELECT * FROM Cricket_Teams")
+                result = cursor.fetchall() 
+                final = render_template("Cricket.html", results = result)
+                return final
+            elif(option == "delete"):
+                pass
+            elif(option == "search"):
+                pass
+            else:
+                return "NOT A VALID OPTION"
+    except Exception as e:
+        return f"Error : {e}"
+    return "INVALID REQUEST!"
 
 if __name__ == "__main__":
     app.run(debug=True)
