@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <h1>Cricket Management System</h1>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/Sports.css')}}">
+{% endblock %}
+
+{% block body %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

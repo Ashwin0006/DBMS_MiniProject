@@ -82,6 +82,12 @@
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
                 fieldElement.style.display = fieldsToShow.includes(field) ? 'block' : 'none';
+
+                if (fieldsToShow.includes(field)) {
+                    fieldElement.setAttribute('required', '');
+                } else {
+                    fieldElement.removeAttribute('required');
+                }
             });
 
             allLabels.forEach(function (label) {
@@ -97,6 +103,7 @@
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
                 fieldElement.style.display = 'none';
+                fieldElement.removeAttribute('required');
             });
 
             allLabels.forEach(function (label) {

@@ -28,9 +28,8 @@ def next_page():
                 query = "SELECT * FROM Cricket_Teams"   
                 cursor.execute(query)
                 result = cursor.fetchall() 
-                print(result)
                 data = result
-                table_name = selected_game
+                table_name = "Cricket_Teams"
                 final = render_template("Cricket.html", results = result)
                 return final
             elif(selected_game == "FootBall"):
@@ -43,23 +42,36 @@ def next_page():
 def cric_data():
     global table_name
     try:
+        if not table_name:
+            return render_template("index.html")
         if request.method == "POST":
-            option = request.form['cricdata']
+            option = request.form['cricoption']
             if(option == "insert"):
                 name = request.form['field1']
                 color = request.form['field2']
-                query = f"INSERT INTO {table_name} Values ({name}, {color})"
+                query = f"INSERT INTO {table_name} Values ('{name}', '{color}')"
                 cursor.execute(query)
-                cursor.executr("SELECT * FROM Cricket_Teams")
-                result = cursor.fetchall() 
-                final = render_template("Cricket.html", results = result)
-                return final
             elif(option == "delete"):
-                pass
-            elif(option == "search"):
-                pass
+                name = request.form['field3']
+                query = f"DELETE FROM {table_name} WHERE team_name = '{name}'"
+                print(query)
+                cursor.execute(query)
+            elif(option == "get"):
+                team = request.form['field4']
+                query = f"SELECT PLAYER_ID, PLAYER_NAME, STATUS FROM Cricket_Team_Players WHERE TEAM_NAME = '{team}'"
+                cursor.execute(query)
+                result = cursor.fetchall()
+                return render_template('Cricket_2.html', results = result)
             else:
                 return "NOT A VALID OPTION"
+            
+            cursor.execute("SELECT * FROM Cricket_Teams")
+            result = cursor.fetchall() 
+            final = render_template("Cricket.html", results = result)
+
+            connection.commit()
+
+            return final    
     except Exception as e:
         return f"Error : {e}"
     return "INVALID REQUEST!"
