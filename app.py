@@ -12,6 +12,8 @@ oracle_connection_string = 'system/ak@localhost:1521/XE'
 connection = cx_Oracle.connect(oracle_connection_string)
 cursor = connection.cursor()
 
+#cursor.execute(f'START "ScriptSQL.sql"')
+
 
 @app.route("/")
 def index():
