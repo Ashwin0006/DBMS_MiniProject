@@ -1,76 +1,60 @@
 from flask import Flask, render_template, request
-import pickle
-import datahandler
+import cx_Oracle
 
 
+cx_Oracle.init_oracle_client(lib_dir=r"E:\Database\DB\dbhomeXE\bin")
+orcl_connec_str = 'system/ak@localhost:1521/XE'
+connection = cx_Oracle.connect(orcl_connec_str)
+cursor = connection.cursor()
 
-# Defining Paths
-mentor_path = r"data\mentor.pickle"
-mentee_path = r"data\mentee.pickle"
 
-# Defining helper functions
-def read_data(path):
-    data = None
-    with open(path, 'rb') as infile:
-        data = pickle.load(infile)
-    return data
+def main():
+    pass
 
-def check_cred(arr, user, pwd):
-    flag = False
-    for person in arr:
-        if person.name == user and str(person.pwd) == str(pwd):
-            flag = True
-            break
-    return flag
+
 
 # Main Flask App!
 app = Flask(__name__)
-<<<<<<< HEAD
-table_name = ''
-data = []
-
-cx_Oracle.init_oracle_client(lib_dir="E:/Database/DB/dbhomeXE/bin")
-oracle_connection_string = 'system/ak@localhost:1521/XE'
-
-connection = cx_Oracle.connect(oracle_connection_string)
-cursor = connection.cursor()
-
-#cursor.execute(f'START "ScriptSQL.sql"')
-
-=======
->>>>>>> origin/main
 
 @app.route("/")
 def index():
-    return render_template("Welcome.html")
+    return render_template("index.html")
 
-@app.route("/login", methods=['POST', 'GET'])
-def login():
-    #try:
-    if request.method == "POST":
-        user = request.form['username']
-        pwd = request.form['password']
-        role = request.form['selectedRole']
-        if role == "Mentor":
-            data = read_data(mentor_path)
-        elif role == "Student":
-            data = read_data(mentee_path)
-        access = check_cred(data, user, pwd)
-        if access:
-            return "Login Successful"
-        else:
-            return "Invalid Login"
-    #except Exception as e:
-        #return f"Error :{e}"
-    return "Done!"
+@app.route("/next_page", methods=["POST", "GET"])
+def next_page():
+    option = request.form["selectedGame"]
+    if(option == "Cricket"):
+        cursor.execute("SELECT * FROM Cricket_Teams")
+        data = cursor.fetchall()
+        return render_template("Cricket.html", teams_data = data)
+    elif(option == "Football"):
+        return render_template("FootBall.html")
+    return "Error :Unable to Process Request!"
 
-@app.route("/signup_page")
-def signup_page():
-    return render_template('Signup.html')
-
-@app.route("/signup", methods=["POST", "GET"])
-def signup():
-    return "SignUp Successful!"
+@app.route("/cric_data", methods=['POST', 'GET'])
+def cric_data():
+    option = request.form["cricoption"]
+    if option == "insert":
+        id = request.form["field1"]
+        name = request.form["field2"]
+        wins = request.form["field3"]
+        query = f"INSERT INTO CRICKET_TEAMS VALUES ({id}, '{name}', 11, {wins})"
+        cursor.execute(query)
+        cursor.execute("Commit")
+        cursor.execute("SELECT * FROM Cricket_Teams")
+        data = cursor.fetchall()
+        return render_template("Cricket.html", teams_data = data)
+    elif option == "delete":
+        id = request.form["field1"]
+        query = f"DELETE FROM Cricket_Teams WHERE team_id = {id}"
+        cursor.execute(query)
+        cursor.execute("Commit")
+        cursor.execute("SELECT * FROM Cricket_Teams")
+        data = cursor.fetchall()
+        return render_template("Cricket.html", teams_data = data)
+    elif option == "get":
+        id = request.form["field1"]
 
 if __name__ == "__main__":
+    main()
     app.run(debug = True)

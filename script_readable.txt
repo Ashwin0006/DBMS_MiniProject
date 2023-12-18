@@ -1,0 +1,43 @@
+/*DROP TABLE Cricket_Players;DROP TABLE Cricket_Games;DROP TABLE Cricket_Teams;DROP TABLE Cricket_Tournaments;*/
+
+/*
+-- Table for available teams
+CREATE TABLE Cricket_Teams (
+    team_id INT PRIMARY KEY,
+    team_name VARCHAR(255) NOT NULL,
+    total_players INT,
+    wins INT
+);
+
+-- Table for games played
+CREATE TABLE Cricket_Games (
+    game_id INT PRIMARY KEY,
+    tournament_id INT,
+    team1_id INT,
+    team2_id INT,
+    winner_id INT,
+    FOREIGN KEY (tournament_id) REFERENCES tournaments(tournament_id),
+    FOREIGN KEY (team1_id) REFERENCES teams(team_id),
+    FOREIGN KEY (team2_id) REFERENCES teams(team_id),
+    FOREIGN KEY (winner_id) REFERENCES teams(team_id)
+);
+
+-- Table for players
+CREATE TABLE Cricket_Players (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(255) NOT NULL,
+    team_id INT,
+    jersey_no INT,
+    no_matches_played INT,
+    FOREIGN KEY (team_id) REFERENCES teams(team_id)
+);
+
+-- Table for tournaments
+CREATE TABLE Cricket_Tournaments (
+    tournament_id INT PRIMARY KEY,
+    tournament_name VARCHAR(255) NOT NULL,
+    winner_id INT,
+    total_teams INT,
+    FOREIGN KEY (winner_id) REFERENCES teams(team_id)
+);
+*/

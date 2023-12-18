@@ -1,0 +1,24 @@
+4. Sports Management System
+
+-Design a database to keep track of the teams and games of a sport league. 
+-A team has a number of players, not all of whom participate in each game. 
+-It is desired to keep track of the players participating in each game of each team and the result 
+ of the game.
+
+#Design
+    # Say Cricket!
+        #Make a table for avaliable teams (team_id, team_no, total_players, wins) 
+        #Make a table for games played in tournament schema (tournament_no, 1st team, 2ndteam, winner)
+        #Make a player table likely schema (player_id, p_name, team_no, team_name, jersery_no, no_matches)
+        #Make a table for tournamets schema (tournament_no, name, winner, total_teams)
+    # DO normalizarion
+        # Already in 1NF
+        # FOR t1 :
+            #IN 2NF
+        # FOR t2:
+            #IN 2NF
+        # FOR t3:
+            #IN 2NF
+        # FOR t4:
+            #IN 2NF
+

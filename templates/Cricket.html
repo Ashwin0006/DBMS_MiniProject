@@ -6,22 +6,22 @@
 {% endblock %}
 
 {% block body %}
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Colour</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in results %}
-                <tr>
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table border="1">
+    <tr>
+        <th>Team ID</th>
+        <th>Team Name</th>
+        <th>Total Players</th>
+        <th>Wins</th>
+    </tr>
+    {% for team in teams_data %}
+    <tr>
+        <td>{{ team[0] }}</td>
+        <td>{{ team[1] }}</td>
+        <td>{{ team[2] }}</td>
+        <td>{{ team[3] }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
     <br><br>
 
@@ -40,24 +40,22 @@
             <label for="getOption" value="search">Get Particular Data About Team</label>
             <br>
             <div id="additionalFields">
-                <label for="field1" id="label1">Insert Name:</label>
+                <label for="field1" id="label1">Team ID:</label>
                 <input type="text" id="field1" name="field1">
                 <br><br>
-                <label for="field2" id="label2">Insert Colour:</label>
+                <label for="field2" id="label2">TEAM Name:</label>
                 <input type="text" id="field2" name="field2">
                 <br><br>
-                <label for="field3" id="label3">Delete Name:</label>
+                <label for="field3" id="label3">Number of Wins:</label>
                 <input type="text" id="field3" name="field3">
                 <br><br>
-                <label for="field4" id="label4">Get Particular Data Of Team:</label>
-                <input type="text" id="field4" name="field4">
                 <br>
             </div>
-
             <br><br>
             <button type="submit" class="fancy-button">Submit</button>
         </form>
     </span>
+    <br><br>
 
     <script>
         function showAdditionalFields() {
@@ -65,19 +63,19 @@
             var additionalFields = document.getElementById('additionalFields');
 
             if (option === 'insert') {
-                showFields(['field1', 'field2'], ['label1', 'label2']);
+                showFields(['field1', 'field2', 'field3'], ['label1', 'label2', 'label3']);
             } else if (option === 'delete') {
-                showFields(['field3'], ['label3']);
+                showFields(['field1'], ['label1']);
             } else if (option === 'get') {
-                showFields(['field4'], ['label4']);
+                showFields(['field1'], ['label1']);
             } else {
                 hideAllFields();
             }
         }
 
         function showFields(fieldsToShow, labelsToShow) {
-            var allFields = ['field1', 'field2', 'field3', 'field4'];
-            var allLabels = ['label1', 'label2', 'label3', 'label4'];
+            var allFields = ['field1', 'field2', 'field3'];
+            var allLabels = ['label1', 'label2', 'label3'];
 
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
@@ -97,8 +95,8 @@
         }
 
         function hideAllFields() {
-            var allFields = ['field1', 'field2', 'field3', 'field4'];
-            var allLabels = ['label1', 'label2', 'label3', 'label4'];
+            var allFields = ['field1', 'field2', 'field3'];
+            var allLabels = ['label1', 'label2', 'label3'];
 
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
@@ -120,7 +118,5 @@
         hideAllFields();
         showAdditionalFields();
     </script>
-
-    <br><br>
 
 {% endblock %}
