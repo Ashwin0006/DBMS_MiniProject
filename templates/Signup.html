@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>SignUp</title>
+{% endblock %}
+
+{% block body %}
+    <form method="post" action="{{ url_for('signup') }}">
+        <label>Username :</label>
+        <input type="text" name="username">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+
+

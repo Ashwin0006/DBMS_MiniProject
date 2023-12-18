@@ -1,8 +1,31 @@
 from flask import Flask, render_template, request
-import cx_Oracle
+import pickle
+import datahandler
 
 
+
+# Defining Paths
+mentor_path = r"data\mentor.pickle"
+mentee_path = r"data\mentee.pickle"
+
+# Defining helper functions
+def read_data(path):
+    data = None
+    with open(path, 'rb') as infile:
+        data = pickle.load(infile)
+    return data
+
+def check_cred(arr, user, pwd):
+    flag = False
+    for person in arr:
+        if person.name == user and str(person.pwd) == str(pwd):
+            flag = True
+            break
+    return flag
+
+# Main Flask App!
 app = Flask(__name__)
+<<<<<<< HEAD
 table_name = ''
 data = []
 
@@ -14,69 +37,40 @@ cursor = connection.cursor()
 
 #cursor.execute(f'START "ScriptSQL.sql"')
 
+=======
+>>>>>>> origin/main
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("Welcome.html")
 
-@app.route("/next-page", methods=["GET", "POST"])
-def next_page():
-    global data, table_name
-    final = "Fatal Error!\nPlease Contact Developers"
-    try:
-        if request.method == "POST":
-            selected_game = request.form['selectedGame']
-            if(selected_game == "Cricket"):  
-                query = "SELECT * FROM Cricket_Teams"   
-                cursor.execute(query)
-                result = cursor.fetchall() 
-                data = result
-                table_name = "Cricket_Teams"
-                final = render_template("Cricket.html", results = result)
-                return final
-            elif(selected_game == "FootBall"):
-                return render_template("FootBall.html", results = result)
-    except Exception as e:
-        return f"Error :{e}!\nPlease Contact Developers"
-    return "INVALID REQUEST!"
+@app.route("/login", methods=['POST', 'GET'])
+def login():
+    #try:
+    if request.method == "POST":
+        user = request.form['username']
+        pwd = request.form['password']
+        role = request.form['selectedRole']
+        if role == "Mentor":
+            data = read_data(mentor_path)
+        elif role == "Student":
+            data = read_data(mentee_path)
+        access = check_cred(data, user, pwd)
+        if access:
+            return "Login Successful"
+        else:
+            return "Invalid Login"
+    #except Exception as e:
+        #return f"Error :{e}"
+    return "Done!"
 
-@app.route("/cric_data", methods=["POST", "GET"])
-def cric_data():
-    global table_name
-    try:
-        if not table_name:
-            return render_template("index.html")
-        if request.method == "POST":
-            option = request.form['cricoption']
-            if(option == "insert"):
-                name = request.form['field1']
-                color = request.form['field2']
-                query = f"INSERT INTO {table_name} Values ('{name}', '{color}')"
-                cursor.execute(query)
-            elif(option == "delete"):
-                name = request.form['field3']
-                query = f"DELETE FROM {table_name} WHERE team_name = '{name}'"
-                print(query)
-                cursor.execute(query)
-            elif(option == "get"):
-                team = request.form['field4']
-                query = f"SELECT PLAYER_ID, PLAYER_NAME, STATUS FROM Cricket_Team_Players WHERE TEAM_NAME = '{team}'"
-                cursor.execute(query)
-                result = cursor.fetchall()
-                return render_template('Cricket_2.html', results = result)
-            else:
-                return "NOT A VALID OPTION"
-            
-            cursor.execute("SELECT * FROM Cricket_Teams")
-            result = cursor.fetchall() 
-            final = render_template("Cricket.html", results = result)
+@app.route("/signup_page")
+def signup_page():
+    return render_template('Signup.html')
 
-            connection.commit()
-
-            return final    
-    except Exception as e:
-        return f"Error : {e}"
-    return "INVALID REQUEST!"
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    return "SignUp Successful!"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug = True)
