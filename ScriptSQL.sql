@@ -62,3 +62,6 @@ INSERT INTO Cricket_Tournaments (tournament_id, tournament_name, winner_id, tota
 INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (1, 1, 1, 2, 1);
 INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (2, 1, 2, 1, 2);
 INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (3, 2, 1, 2, 2);
+
+REM PLSQL
+CREATE OR REPLACE FUNCTION 

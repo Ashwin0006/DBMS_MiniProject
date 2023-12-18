@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <h1>Cricket Management System</h1>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/Sports.css')}}">
+{% endblock %}
+
+{% block body %}
+    <table border="1">
+        <tr>
+            <th>Player ID</th>
+            <th>Player Name</th>
+            <th>Team ID</th>
+            <th>Jersey Number</th>
+            <th>Matches Played</th>
+        </tr>
+        {% for player in players_data %}
+        <tr>
+            <td>{{ player[0] }}</td>
+            <td>{{ player[1] }}</td>
+            <td>{{ player[2] }}</td>
+            <td>{{ player[3] }}</td>
+            <td>{{ player[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><br>
+
+    <span>
+        <form method="post" action="{{ url_for('cric_player_data') }}">
+            <p>
+                <h1>Select The Option To Perform</h1>
+            </p>
+            <input type="radio" id="insertOption" name="cricoption" value="insert" required>
+            <label for="insertOption" value="insert">Insert Player Into the Table</label>
+            <br>
+            <input type="radio" id="deleteOption" name="cricoption" value="delete">
+            <label for="deleteOption" value="delete">Delete Player From the Table</label>
+            <div id="additionalFields">
+                <label for="field1" id="label1">Team ID:</label>
+                <input type="text" id="field1" name="field1">
+                <br><br>
+                <label for="field2" id="label2">TEAM Name:</label>
+                <input type="text" id="field2" name="field2">
+                <br><br>
+                <label for="field3" id="label3">Number of Wins:</label>
+                <input type="text" id="field3" name="field3">
+                <br><br>
+                <br>
+            </div>
+            <br><br>
+            <button type="submit" class="fancy-button">Submit</button>
+        </form>
+    </span>
+    <br><br>
+
+    <script>
+        function showAdditionalFields() {
+            var option = document.querySelector('input[name="cricoption"]:checked').value;
+            var additionalFields = document.getElementById('additionalFields');
+
+            if (option === 'insert') {
+                showFields(['field1', 'field2', 'field3'], ['label1', 'label2', 'label3']);
+            } else if (option === 'delete') {
+                showFields(['field1'], ['label1']);
+            } else if (option === 'get') {
+                showFields(['field1'], ['label1']);
+            } else {
+                hideAllFields();
+            }
+        }
+
+        function showFields(fieldsToShow, labelsToShow) {
+            var allFields = ['field1', 'field2', 'field3'];
+            var allLabels = ['label1', 'label2', 'label3'];
+
+            allFields.forEach(function (field) {
+                var fieldElement = document.getElementById(field);
+                fieldElement.style.display = fieldsToShow.includes(field) ? 'block' : 'none';
+
+                if (fieldsToShow.includes(field)) {
+                    fieldElement.setAttribute('required', '');
+                } else {
+                    fieldElement.removeAttribute('required');
+                }
+            });
+
+            allLabels.forEach(function (label) {
+                var labelElement = document.getElementById(label);
+                labelElement.style.display = labelsToShow.includes(label) ? 'block' : 'none';
+            });
+        }
+
+        function hideAllFields() {
+            var allFields = ['field1', 'field2', 'field3'];
+            var allLabels = ['label1', 'label2', 'label3'];
+
+            allFields.forEach(function (field) {
+                var fieldElement = document.getElementById(field);
+                fieldElement.style.display = 'none';
+                fieldElement.removeAttribute('required');
+            });
+
+            allLabels.forEach(function (label) {
+                var labelElement = document.getElementById(label);
+                labelElement.style.display = 'none';
+            });
+        }
+
+        var radioButtons = document.querySelectorAll('input[name="cricoption"]');
+        radioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', showAdditionalFields);
+        });
+
+        hideAllFields();
+        showAdditionalFields();
+    </script>
+{% endblock %}

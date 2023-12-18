@@ -54,7 +54,14 @@ def cric_data():
         return render_template("Cricket.html", teams_data = data)
     elif option == "get":
         id = request.form["field1"]
+        query = f"SELECT * FROM CRICKET_PLAYERS WHERE team_id = {id}"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        return render_template("Cricket_player_details.html", players_data = data)
 
+@app.route("/cric_player_data")
+def cric_player_data():
+    
 if __name__ == "__main__":
     main()
     app.run(debug = True)
