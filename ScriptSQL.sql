@@ -95,5 +95,44 @@ BEGIN
 END;
 /
 
+-- Function to find the name of a player when his/her id is given
+CREATE OR REPLACE FUNCTION 
+find_player_name(p_id NUMBER)
+RETURN VARCHAR2
+IS
+required_name varchar2(30);
+BEGIN
+    SELECT player_name INTO required_name FROM Cricket_Players
+    WHERE player_id = p_id;
 
-    
+    RETURN required_name;
+END;
+/
+
+-- Function to find team name when Team id is given.
+CREATE OR REPLACE FUNCTION 
+find_team_name(t_id NUMBER)
+RETURN VARCHAR2
+IS
+required_name varchar2(30);
+BEGIN
+    SELECT team_name INTO required_name FROM Cricket_Teams
+    WHERE team_id = t_id;
+
+    RETURN required_name;
+END;
+/
+
+-- Function to find the name of a tournament when id is given
+CREATE OR REPLACE FUNCTION 
+find_tournament_name(t_id NUMBER)
+RETURN VARCHAR2
+IS
+required_name varchar2(30);
+BEGIN
+    SELECT tournament_name INTO required_name FROM Cricket_Tournaments
+    WHERE tournament_id = t_id;
+
+    RETURN required_name;
+END;
+/

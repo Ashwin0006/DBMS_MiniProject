@@ -122,10 +122,24 @@ def make_change_to_tournaments():
     elif option == "viewData":
         query = "SELECT * FROM Cricket_Games"
         cursor.execute(query)
-        data = cursor.fetchall()
+        data_set = cursor.fetchall()
 
-        print(data)
-        return render_template('cricket_games_paired.html', data_set = data)
+        new_data_set = []
+        for data in data_set:
+            new_data = []
+            for j in range(len(data)):
+                result = data[j]
+                if(j == 1):
+                    # Tournament id
+                    input_variable = data[1]
+                    result = cursor.callfunc("find_tournament_name", cx_Oracle.STRING, [input_variable])
+                elif(j == 2 or j == 3 or j == 4):
+                    input_variable = data[j]
+                    result = cursor.callfunc("find_team_name", cx_Oracle.STRING, [input_variable])
+                new_data.append(result)
+            new_data_set.append(new_data)
+
+        return render_template('cricket_games_paired.html', data_set = new_data_set)
 
 if __name__ == "__main__":
     main()
