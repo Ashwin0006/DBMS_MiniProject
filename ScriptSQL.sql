@@ -65,3 +65,18 @@ INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id
 
 REM PLSQL
 CREATE OR REPLACE FUNCTION 
+find_team_id(p_id NUMBER)
+RETURN NUMBER 
+IS
+required_id NUMBER := 0;
+BEGIN
+
+    SELECT team_id INTO required_id 
+    FROM Cricket_Players
+    WHERE player_id = p_id;
+
+    RETURN required_id;
+END;
+/
+
+    
