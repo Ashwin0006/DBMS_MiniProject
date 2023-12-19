@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    
+{% endblock %}
+
+{% block body %}
+    <table border="1">
+        <tr>
+            <th>Game Id</th>
+            <th>Tournament Name</th>
+            <th>Team1 Name</th>
+            <th>Team2 Name</th>
+            <th>Winner Team</th>
+        </tr>
+        {% for data in data_set %}
+        <tr>
+            <td>{{ data[0] }}</td>
+            <td>{{ data[1] }}</td>
+            <td>{{ data[2] }}</td>
+            <td>{{ data[3] }}</td>
+            <td>{{ data[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

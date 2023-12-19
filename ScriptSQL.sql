@@ -79,4 +79,21 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE TRIGGER 
+check_total_teams
+BEFORE INSERT OR UPDATE
+ON Cricket_Tournaments
+FOR EACH ROW
+DECLARE
+    total_teams_var int := 0;
+BEGIN
+    SELECT COUNT(*) INTO total_teams_var
+    FROM Cricket_Teams;
+    IF total_teams_var < :NEW.total_teams THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Invalid Total Players');
+    END IF;
+END;
+/
+
+
     

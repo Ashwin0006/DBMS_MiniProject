@@ -93,6 +93,40 @@ def cric_player_data():
         data = cursor.fetchall()
         return render_template("Cricket_player_details.html", players_data = data)
     return "Showing Player Data!"
+
+@app.route("/go_to_tournaments")
+def go_to_tournaments():
+    query = "SELECT * FROM Cricket_Tournaments"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    print(data)
+    return render_template('Tournaments_display.html', tournament_data = data)
+
+@app.route("/make_change_to_tournaments", methods=["POST", "GET"])
+def make_change_to_tournaments():
+    option = request.form["tournamentoption"]
+    if option == "insert":
+        id_info = request.form["field1"]
+        name = request.form["field2"]
+        winner = request.form["field3"]
+        total = request.form["field4"]
+        
+        query = f"INSERT INTO Cricket_Tournaments VALUES ('{id_info}', '{name}', '{winner}', '{total}')"
+        cursor.execute(query)
+        cursor.execute("COMMIT")
+
+        cursor.execute('SELECT * FROM Cricket_Tournaments')
+        results = cursor.fetchall()
+
+        return render_template('Tournaments_display.html', tournament_data = results)
+    elif option == "viewData":
+        query = "SELECT * FROM Cricket_Games"
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        print(data)
+        return render_template('cricket_games_paired.html', data_set = data)
+
 if __name__ == "__main__":
     main()
     

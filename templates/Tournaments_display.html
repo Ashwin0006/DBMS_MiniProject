@@ -1,85 +1,74 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <h1>Cricket Management System</h1>
     <link rel="stylesheet" href="{{url_for('static', filename='css/Sports.css')}}">
+    
 {% endblock %}
 
 {% block body %}
-<table border="1">
-    <tr>
-        <th>Team ID</th>
-        <th>Team Name</th>
-        <th>Total Players</th>
-        <th>Wins</th>
-    </tr>
-    {% for team in teams_data %}
-    <tr>
-        <td>{{ team[0] }}</td>
-        <td>{{ team[1] }}</td>
-        <td>{{ team[2] }}</td>
-        <td>{{ team[3] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-    <br><br>
-
+    <table border="1">
+        <tr>
+            <th>Tournament ID</th>
+            <th>Tournament Name</th>
+            <th>Winner</th>
+            <th>Total Teams Participated</th>
+        </tr>
+        {% for tournament in tournament_data %}
+        <tr>
+            <td>{{ tournament[0] }}</td>
+            <td>{{ tournament[1] }}</td>
+            <td>{{ tournament[2] }}</td>
+            <td>{{ tournament[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
     <span>
-        <form method="post" action="{{ url_for('cric_data') }}">
+        <form method="post" action="{{ url_for('make_change_to_tournaments') }}">
             <p>
                 <h1>Select The Option To Perform</h1>
             </p>
-            <input type="radio" id="insertOption" name="cricoption" value="insert" required>
-            <label for="insertOption" value="insert">Insert Data Into the Table</label>
+            <input type="radio" id="insertOption" name="tournamentoption" value="insert" required>
+            <label for="insertOption" value="insert">Insert a new Tournament</label>
             <br>
-            <input type="radio" id="deleteOption" name="cricoption" value="delete">
-            <label for="deleteOption" value="delete">Delete Data From the Table</label>
-            <br>
-            <input type="radio" id="getOption" name="cricoption" value="get">
-            <label for="getOption" value="search">Get Particular Data About Team</label>
+            <input type="radio" id="viewOption" name="tournamentoption" value="viewData">
+            <label for="viewOption" value="viewData">View the Details of the Tournament</label>
             <br>
             <div id="additionalFields">
-                <label for="field1" id="label1">Team ID:</label>
+                <label for="field1" id="label1">Tournament ID:</label>
                 <input type="text" id="field1" name="field1">
                 <br><br>
-                <label for="field2" id="label2">TEAM Name:</label>
+                <label for="field2" id="label2">Tournament Name:</label>
                 <input type="text" id="field2" name="field2">
                 <br><br>
-                <label for="field3" id="label3">Number of Wins:</label>
+                <label for="field3" id="label3">Tournament Winner:</label>
                 <input type="text" id="field3" name="field3">
                 <br><br>
-                <br>
+                <label for="field4" id="label4">Total Teams:</label>
+                <input type="text" id="field4" name="field4">
             </div>
             <br><br>
             <button type="submit" class="fancy-button">Submit</button>
         </form>
-        <br>
-        <form methods="post" action="{{ url_for('go_to_tournaments')}}">
-            <button type="submit" class="fancy-button">View Tournaments</button>
-        </form>
     </span>
     <br><br>
-
     <script>
         function showAdditionalFields() {
-            var option = document.querySelector('input[name="cricoption"]:checked').value;
+            var option = document.querySelector('input[name="tournamentoption"]:checked').value;
             var additionalFields = document.getElementById('additionalFields');
 
             if (option === 'insert') {
-                showFields(['field1', 'field2', 'field3'], ['label1', 'label2', 'label3']);
-            } else if (option === 'delete') {
+                showFields(['field1', 'field2', 'field3', 'field4'], ['label1', 'label2', 'label3', 'label4']);
+            }else if (option === 'viewData') {
                 showFields(['field1'], ['label1']);
-            } else if (option === 'get') {
-                showFields(['field1'], ['label1']);
-            } else {
+            }else {
                 hideAllFields();
             }
         }
 
         function showFields(fieldsToShow, labelsToShow) {
-            var allFields = ['field1', 'field2', 'field3'];
-            var allLabels = ['label1', 'label2', 'label3'];
+            var allFields = ['field1', 'field2', 'field3', 'field4'];
+            var allLabels = ['label1', 'label2', 'label3', 'label4'];
 
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
@@ -99,8 +88,8 @@
         }
 
         function hideAllFields() {
-            var allFields = ['field1', 'field2', 'field3'];
-            var allLabels = ['label1', 'label2', 'label3'];
+            var allFields = ['field1', 'field2', 'field3', 'field4'];
+            var allLabels = ['label1', 'label2', 'label3', 'label4'];
 
             allFields.forEach(function (field) {
                 var fieldElement = document.getElementById(field);
@@ -114,7 +103,7 @@
             });
         }
 
-        var radioButtons = document.querySelectorAll('input[name="cricoption"]');
+        var radioButtons = document.querySelectorAll('input[name="tournamentoption"]');
         radioButtons.forEach(function (radioButton) {
             radioButton.addEventListener('change', showAdditionalFields);
         });
@@ -122,5 +111,4 @@
         hideAllFields();
         showAdditionalFields();
     </script>
-
 {% endblock %}
