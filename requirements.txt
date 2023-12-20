@@ -7,7 +7,7 @@
 
 #Design
     # Say Cricket!
-        #Make a table for avaliable teams (team_id, team_no, total_players, wins) 
+        #Make a table for avaliable teams (team_id, team_name, total_players, wins) 
         #Make a table for games played in tournament schema (tournament_no, 1st team, 2ndteam, winner)
         #Make a player table likely schema (player_id, p_name, team_no, team_name, jersery_no, no_matches)
         #Make a table for tournamets schema (tournament_no, name, winner, total_teams)
@@ -15,10 +15,18 @@
         # Already in 1NF
         # FOR t1 :
             #IN 2NF
+            #Also in 3NF
         # FOR t2:
             #IN 2NF
+            #IN 3NF
         # FOR t3:
             #IN 2NF
+            #Not in 3NF due to Transitive Dependencies!
+                $ Doing Normalization into 3NF.
+                #(player_id, p_name, team_no, jersey_no, matches_player)
+                #(team_id, team_name) which is same as table t1
+            #This is now in 3NF
         # FOR t4:
             #IN 2NF
+            #In 3NF
 

@@ -59,7 +59,7 @@ def cric_data():
             data = cursor.fetchall()
             return render_template("Cricket_player_details.html", players_data = data)
     except Exception as e:
-        return f"Error : {e}"
+        return render_template("error.html", error_message=e)
 
 @app.route("/cric_player_data", methods=['POST', 'GET'])
 def cric_player_data():
@@ -98,7 +98,7 @@ def cric_player_data():
             return render_template("Cricket_player_details.html", players_data = data)
         return "Showing Player Data!"
     except Exception as e:
-        return f"Error :{e}"
+        return render_template("error.html", error_message=e)
 
 @app.route("/go_to_tournaments")
 def go_to_tournaments():
@@ -109,7 +109,9 @@ def go_to_tournaments():
         print(data)
         return render_template('Tournaments_display.html', tournament_data = data)
     except Exception as e:
-        return f"Error : {e}"
+        return render_template("error.html", error_message=e)
+    
+
 @app.route("/make_change_to_tournaments", methods=["POST", "GET"])
 def make_change_to_tournaments():
     try:
@@ -129,7 +131,8 @@ def make_change_to_tournaments():
 
             return render_template('Tournaments_display.html', tournament_data = results)
         elif option == "viewData":
-            query = "SELECT * FROM Cricket_Games"
+            t_id = request.form["field1"]
+            query = f"SELECT * FROM Cricket_Games WHERE tournament_id = {t_id}"
             cursor.execute(query)
             data_set = cursor.fetchall()
 
@@ -150,7 +153,7 @@ def make_change_to_tournaments():
 
             return render_template('cricket_games_paired.html', data_set = new_data_set)
     except Exception as e:
-        return f"Error :{e}"
+        return render_template("error.html", error_message=e)
 
 if __name__ == "__main__":
     main()
