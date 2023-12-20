@@ -37,8 +37,9 @@ def cric_data():
         if option == "insert":
             id = request.form["field1"]
             name = request.form["field2"]
-            wins = request.form["field3"]
-            query = f"INSERT INTO CRICKET_TEAMS VALUES ({id}, '{name}', 11, {wins})"
+            players = request.form["field3"]
+            wins = request.form["field4"]
+            query = f"INSERT INTO CRICKET_TEAMS VALUES ({id}, '{name}', '{players}', {wins})"
             cursor.execute(query)
             cursor.execute("Commit")
             cursor.execute("SELECT * FROM Cricket_Teams")
@@ -105,9 +106,20 @@ def go_to_tournaments():
     try:
         query = "SELECT * FROM Cricket_Tournaments"
         cursor.execute(query)
-        data = cursor.fetchall()
-        print(data)
-        return render_template('Tournaments_display.html', tournament_data = data)
+        data_set = cursor.fetchall()
+
+        new_data_set = []
+        for data in data_set:
+            new_data = []
+            for j in range(len(data)):
+                result = data[j]
+                if j == 2:
+                    input_variable = data[2]
+                    result = cursor.callfunc("find_team_name", cx_Oracle.STRING, [input_variable])
+                new_data.append(result)
+            new_data_set.append(new_data)
+        print(new_data_set)
+        return render_template('Tournaments_display.html', tournament_data = new_data_set)
     except Exception as e:
         return render_template("error.html", error_message=e)
     
@@ -126,8 +138,22 @@ def make_change_to_tournaments():
             cursor.execute(query)
             cursor.execute("COMMIT")
 
-            cursor.execute('SELECT * FROM Cricket_Tournaments')
-            results = cursor.fetchall()
+            query = "SELECT * FROM Cricket_Tournaments"
+            cursor.execute(query)
+            data_set = cursor.fetchall()
+
+            new_data_set = []
+            for data in data_set:
+                new_data = []
+                for j in range(len(data)):
+                    result = data[j]
+                    if j == 2:
+                        input_variable = data[2]
+                        result = cursor.callfunc("find_team_name", cx_Oracle.STRING, [input_variable])
+                    new_data.append(result)
+                new_data_set.append(new_data)
+            print(new_data_set)
+            results = new_data_set
 
             return render_template('Tournaments_display.html', tournament_data = results)
         elif option == "viewData":

@@ -44,24 +44,6 @@ CREATE TABLE Cricket_Players (
     FOREIGN KEY (team_id) REFERENCES Cricket_Teams(team_id)
 );
 
--- INserting Values into teams Table!
-INSERT INTO Cricket_Teams (team_id, team_name, total_players, wins) VALUES (1, 'Team1', 11, 5);
-INSERT INTO Cricket_Teams (team_id, team_name, total_players, wins) VALUES (2, 'Team2', 11, 3);
-
-
--- Inserting values into the players table
-INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (1, 'Player1', 1, 10, 20);
-INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (2, 'Player2', 1, 7, 15);
-INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (3, 'Player3', 2, 5, 18);
-
--- Inserting values into the tournaments table
-INSERT INTO Cricket_Tournaments (tournament_id, tournament_name, winner_id, total_teams) VALUES (1, 'Tournament1', 1, 2);
-INSERT INTO Cricket_Tournaments (tournament_id, tournament_name, winner_id, total_teams) VALUES (2, 'Tournament2', 2, 2);
-
--- Inserting values into the games table
-INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (1, 1, 1, 2, 1);
-INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (2, 1, 2, 1, 2);
-INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (3, 2, 1, 2, 2);
 
 REM PLSQL
 CREATE OR REPLACE FUNCTION 
@@ -136,3 +118,49 @@ BEGIN
     RETURN required_name;
 END;
 /
+
+--Sequence for Tournament Number!
+CREATE SEQUENCE cric_tour_number
+START WITH 1
+INCREMENT BY 1
+MAXVALUE 999999
+CYCLE
+CACHE 20; 
+
+--Trigger for checking count of players in a cricket team.
+CREATE OR REPLACE TRIGGER
+trg_count_players
+BEFORE INSERT OR UPDATE
+ON Cricket_Teams
+FOR EACH ROW
+BEGIN
+    IF :NEW.total_players > 25 THEN 
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot have a team with more than 11 Players.');
+    ELSIF :NEW.total_players < 11 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot have a team with players less than 8 Players.');
+    END IF;
+END;
+/
+
+
+-- INserting Values into teams Table!
+INSERT INTO Cricket_Teams (team_id, team_name, total_players, wins) VALUES (1, 'Team1', 15, 5);
+INSERT INTO Cricket_Teams (team_id, team_name, total_players, wins) VALUES (2, 'Team2', 11, 3);
+
+
+-- Inserting values into the players table
+INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (1, 'Player1', 1, 10, 20);
+INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (2, 'Player2', 1, 7, 15);
+INSERT INTO Cricket_Players (player_id, player_name, team_id, jersey_no, no_matches_played) VALUES (3, 'Player3', 2, 5, 18);
+
+-- Inserting values into the tournaments table
+INSERT INTO Cricket_Tournaments (tournament_id, tournament_name, winner_id, total_teams) VALUES (1, 'Tournament1', 1, 2);
+INSERT INTO Cricket_Tournaments (tournament_id, tournament_name, winner_id, total_teams) VALUES (2, 'Tournament2', 2, 2);
+
+-- Inserting values into the games table
+INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (1, 1, 1, 2, 1);
+INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (2, 1, 2, 1, 2);
+INSERT INTO Cricket_Games (game_id, tournament_id, team1_id, team2_id, winner_id) VALUES (3, 2, 1, 2, 2);
+
+
+
